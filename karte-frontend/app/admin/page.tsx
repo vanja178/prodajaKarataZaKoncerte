@@ -135,6 +135,10 @@ export default function Admin() {
               onChange={(e) => setNewLocation({ ...newLocation, address: e.target.value })}
               className="border rounded p-2 bg-transparent" />
             <button onClick={async () => {
+              if (!newLocation.name || !newLocation.address) {
+                showError("Naziv i adresa su obavezni!");
+                return;
+              }
               const res = await fetch("http://localhost:8080/api/locations", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(newLocation) });
               if (res.ok) { showSuccess("Lokacija dodana!"); setNewLocation({ name: "", address: "" }); fetchAll(); }
               else showError("Greška pri dodavanju lokacije.");
@@ -181,6 +185,10 @@ export default function Admin() {
               {locations.map((loc) => (<option key={loc.id} value={loc.id}>{loc.name}</option>))}
             </select>
             <button onClick={async () => {
+              if (!newRegion.name || !newRegion.capacity || !newRegion.locationId) {
+                showError("Naziv, kapacitet i lokacija su obavezni!");
+                return;
+              }
               const res = await fetch("http://localhost:8080/api/seating-regions", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: newRegion.name, capacity: Number(newRegion.capacity), location: { id: Number(newRegion.locationId) } }) });
               if (res.ok) { showSuccess("Region dodan!"); setNewRegion({ name: "", capacity: "", locationId: "" }); fetchAll(); }
               else showError("Greška pri dodavanju regiona.");
@@ -222,6 +230,10 @@ export default function Admin() {
           <div className="flex gap-2 mb-6">
             <input placeholder="Naziv kategorije" value={newCategory.name} onChange={(e) => setNewCategory({ name: e.target.value })} className="border rounded p-2 bg-transparent flex-1" />
             <button onClick={async () => {
+              if (!newCategory.name) {
+                showError("Naziv kategorije je obavezan!");
+                return;
+              }
               const res = await fetch("http://localhost:8080/api/concert-categories", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(newCategory) });
               if (res.ok) { showSuccess("Kategorija dodana!"); setNewCategory({ name: "" }); fetchAll(); }
               else showError("Greška pri dodavanju kategorije.");
@@ -267,6 +279,10 @@ export default function Admin() {
               {categories.map((cat) => (<option key={cat.id} value={cat.id}>{cat.name}</option>))}
             </select>
             <button onClick={async () => {
+              if (!newConcert.name || !newConcert.dateTime || !newConcert.locationId || !newConcert.categoryId) {
+                showError("Sva polja su obavezna!");
+                return;
+              }
               const res = await fetch("http://localhost:8080/api/concerts", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: newConcert.name, dateTime: newConcert.dateTime, location: { id: Number(newConcert.locationId) }, category: { id: Number(newConcert.categoryId) } }) });
               if (res.ok) { showSuccess("Koncert dodan!"); setNewConcert({ name: "", dateTime: "", locationId: "", categoryId: "" }); fetchAll(); }
               else showError("Greška pri dodavanju koncerta.");
@@ -317,6 +333,10 @@ export default function Admin() {
             </select>
             <input placeholder="Cena (RSD)" type="number" value={newRegionPrice.price} onChange={(e) => setNewRegionPrice({ ...newRegionPrice, price: e.target.value })} className="border rounded p-2 bg-transparent" />
             <button onClick={async () => {
+              if (!newRegionPrice.concertId || !newRegionPrice.regionId || !newRegionPrice.price) {
+                showError("Sva polja su obavezna!");
+                return;
+              }
               const res = await fetch("http://localhost:8080/api/concert-region-prices", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ concert: { id: Number(newRegionPrice.concertId) }, region: { id: Number(newRegionPrice.regionId) }, price: Number(newRegionPrice.price) }) });
               if (res.ok) { showSuccess("Cena dodana!"); setNewRegionPrice({ concertId: "", regionId: "", price: "" }); }
               else showError("Greška pri dodavanju cene.");
@@ -336,6 +356,10 @@ export default function Admin() {
             <label className="text-sm text-gray-500">Datum do kada važi popust:</label>
             <input type="date" value={newDiscount.validUntil} onChange={(e) => setNewDiscount({ ...newDiscount, validUntil: e.target.value })} className="border rounded p-2 bg-white text-black" />
             <button onClick={async () => {
+              if (!newDiscount.concertId || !newDiscount.validUntil) {
+                showError("Koncert i datum su obavezni!");
+                return;
+              }
               const res = await fetch("http://localhost:8080/api/discount-periods", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ concert: { id: Number(newDiscount.concertId) }, validUntil: newDiscount.validUntil, discountPercentage: Number(newDiscount.discountPercentage) }) });
               if (res.ok) { showSuccess("Popust dodan!"); setNewDiscount({ concertId: "", validUntil: "", discountPercentage: "10" }); }
               else showError("Greška pri dodavanju popusta.");
@@ -351,6 +375,10 @@ export default function Admin() {
             <input placeholder="Kod valute (npr. EUR)" value={newCurrency.code} onChange={(e) => setNewCurrency({ ...newCurrency, code: e.target.value })} className="border rounded p-2 bg-transparent" />
             <input placeholder="Naziv valute" value={newCurrency.name} onChange={(e) => setNewCurrency({ ...newCurrency, name: e.target.value })} className="border rounded p-2 bg-transparent" />
             <button onClick={async () => {
+              if (!newCurrency.code || !newCurrency.name) {
+                showError("Kod i naziv valute su obavezni!");
+                return;
+              }
               const res = await fetch("http://localhost:8080/api/currencies", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(newCurrency) });
               if (res.ok) { showSuccess("Valuta dodana!"); setNewCurrency({ code: "", name: "" }); fetchAll(); }
               else showError("Greška pri dodavanju valute.");
