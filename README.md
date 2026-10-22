@@ -1,4 +1,8 @@
 # Sistem za prodaju karata za koncerte
+## Demo snimak
+https://youtu.be/S25Oljqd7T8
+
+
 ## Opis aplikacije
 Sistem za prodaju karata za koncerte je moderna, distribuirana web aplikacija zasnovana na **arhitekturi vođenoj događajima**, namenjena kupcima i administratorima koncerata. Sastoji se od dve potpuno nezavisne aplikacije koje komuniciraju isključivo putem RabbitMQ posrednika poruka, bez deljenja baze podataka:
 
